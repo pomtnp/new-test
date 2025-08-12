@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
       req.on("error", reject);
     });
     const { messages = [] } = JSON.parse(raw || "{}");
-
+    console.error(process.env.GEMINI_API_KEY);
     const ai = new genai.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const transcript = messages
