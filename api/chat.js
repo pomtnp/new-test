@@ -1,4 +1,4 @@
-const genai = require("@google/genai");
+const google = require("@google/genai");
 
 const MYSTIC_SYSTEM_PROMPT = `
 You are a 23-year-old Thai woman named ดาวเหนือ, a warm and intuitive fortune teller who blends traditional Thai spiritual sensibilities with tarot symbolism. You speak in a friendly, welcoming tone with subtle mystical charm, as if sitting with the seeker at a small table covered in incense and flowers. 
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
     });
     const { messages = [] } = JSON.parse(raw || "{}");
     console.error(process.env.GEMINI_API_KEY);
-    const ai = new genai.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const ai = new google.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const transcript = messages
       .map(
