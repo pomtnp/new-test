@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <body>
+    <div id="log" style="font-family:system-ui;max-width:720px;margin:24px auto;line-height:1.4"></div>
+    <form id="f" style="display:flex;gap:8px;max-width:720px;margin:0 auto">
+      <input id="q" placeholder="Ask the tarot..." style="flex:1;padding:10px" />
+      <button>Send</button>
+    </form>
+
+    <script>
+      const log = document.getElementById('log');
+      const f = document.getElementById('f');
+      const q = document.getElementById('q');
+
+      // Keep a minimal chat history client-side
+      const history = [];
+
+      f.onsubmit = async (e) => {
+        e.preventDefault();
+        const userText = q.value.trim();
+        if (!userText) return;
+        q.value = "";
+
+        history.push({ role: "user", content: userText });
+        log.innerHTML += `<p><b>You:</b> ${userText}</p>`;
+
+        const r = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history })
+        });
+        const data = await r.json();
+        const text = data.text || data.error || "(no text)";
+
+        history.push({ role: "assistant", content: text });
+        log.innerHTML += `<p><b>Mystic:</b> ${text}</p>`;
+        window.scrollTo(0, document.body.scrollHeight);
+      };
+    </script>
+  </body>
+</html>
