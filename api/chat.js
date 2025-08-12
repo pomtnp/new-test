@@ -24,8 +24,8 @@ module.exports = async (req, res) => {
       req.on("error", reject);
     });
     const { messages = [] } = JSON.parse(raw || "{}");
-    console.log(process.env.GEMINI_API_KEY);
-    const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+    const ai = new genai.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const transcript = messages
       .map(
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
     const prompt = `${MYSTIC_SYSTEM_PROMPT}\n\n${transcript}\nดาวเหนือ:`;
 
-    const result = await genai.models.generateContent({
+    const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
